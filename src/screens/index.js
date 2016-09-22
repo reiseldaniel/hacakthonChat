@@ -1,5 +1,8 @@
 import {Navigation} from 'react-native-navigation';
 
+import MainScreen from './MainScreen';
+
+
 import LoginScreen from './LoginScreen';
 import FirstTabScreen from './FirstTabScreen';
 import SecondTabScreen from './SecondTabScreen';
@@ -12,9 +15,9 @@ import Campaign from './Campaign';
 
 // register all screens of the app (including internal ones)
 export function registerScreens(store, Provider) {
-  Navigation.registerComponent('Main', () => LoginScreen, store, Provider);
+  Navigation.registerComponent('Main', () => MainScreen, store, Provider);
   Navigation.registerComponent('Campaign', () => Campaign, store, Provider);
-  Navigation.registerComponent('Proposal', () => LoginScreen, store, Provider);
+
 
 
 
