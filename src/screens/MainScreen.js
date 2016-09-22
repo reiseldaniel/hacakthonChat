@@ -4,7 +4,8 @@ import {View, ListView, Text, TextInput,StyleSheet, TouchableOpacity} from 'reac
 import * as firebase from 'firebase';
 import _ from 'lodash';
 import Gallery from 'react-native-gallery';
-import Search from 'react-native-search-bar';
+
+
 
 
 
@@ -13,6 +14,7 @@ export default class MainScreen extends Component{
 
     constructor(props) {
         super(props);
+        this._renderRow = this._renderRow.bind(this)
         ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             catDataSource: ds.cloneWithRows(this._genCatRows({})),
@@ -23,10 +25,12 @@ export default class MainScreen extends Component{
     }
 
     moveToCampaign(campaign) {
+
+        debugger
         this.props.navigator.push({
             title: "Pushed from SideMenu",
             screen: "Campaign",
-            passProps:campaign
+            passProps:{campaign}
         });
 
     }
@@ -35,7 +39,7 @@ export default class MainScreen extends Component{
 
         return (
             <View style={styles.row} >
-                <TouchableOpacity onPress={({rowData}) => this.moveToCampaign(rowData)}>
+                <TouchableOpacity onPress={() => this.moveToCampaign(rowData)}>
                 <Text style={styles.text} >
                     {rowData.text}
                 </Text>
@@ -99,6 +103,7 @@ export default class MainScreen extends Component{
 
 
 
+
 render() {
         return (
             <View style={{flex: 1}}>
@@ -135,7 +140,7 @@ render() {
                 <View id="campaignList" style={{flexDirection: 'row', margin: 10}}>
                     <ListView
                         dataSource={this.state.campDataSource}
-                        renderRow={this._renderRow.bind(this)}/>
+                        renderRow={this._renderRow}/>
                 </View>
 
 

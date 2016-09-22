@@ -13,6 +13,9 @@ import Immutable from 'immutable';
 import * as _ from 'lodash'
 import {connect} from 'react-redux';
 const {width,height} = Dimensions.get('window');
+import CampaignComponent from '../components/CampaignComponent';
+import SuggestionComponent from '../components/SuggestionComponent';
+
 class Campaign extends Component {
 
   static navigatorStyle = {
@@ -68,15 +71,16 @@ class Campaign extends Component {
 
   render() {
     return (
-        <ScrollView>
-          <ListView scrollEnabled={true} style={styles.list}
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderRow}
-          />
-          {this._renderFooter()}
-        </ScrollView>
-
-
+        <View>
+          <CampaignComponent campaign={this.props.campaign}/>
+          <SuggestionComponent onSubmit={this.addSuggestion.bind(this)}/>
+            <ScrollView>
+              <ListView
+                  dataSource={this.state.dataSource}
+                  renderRow={this._renderRow}
+                  style={styles.list}/>
+            </ScrollView>
+      </View>
     );
   }
   _renderRows() {
@@ -217,6 +221,11 @@ class Campaign extends Component {
         img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"}];
     const ordered = _.orderBy(dataBlob,['score'],['desc']);
     return Immutable.fromJS(ordered);
+  }
+
+
+  addSuggestion(suggestion){
+    this.state.data.push(suggestion);
   }
 
   _renderSeparator(sectionID, rowID) {
