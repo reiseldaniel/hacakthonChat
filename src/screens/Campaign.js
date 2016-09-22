@@ -13,6 +13,9 @@ import Immutable from 'immutable';
 import * as _ from 'lodash'
 import {connect} from 'react-redux';
 const {width,height} = Dimensions.get('window');
+const ds = new ListView.DataSource({
+  rowHasChanged: (r1, r2) => !Immutable.is(r1, r2)
+});
 class Campaign extends Component {
 
   static navigatorStyle = {
@@ -26,14 +29,13 @@ class Campaign extends Component {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this._renderRow = this._renderRow.bind(this);
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => !Immutable.is(r1, r2)
-    });
-    const a = this._genRows({}).toArray();
 
+    const a = this._genRows({}).toArray();
+    this._like = this._like.bind(this);
     this.state = {
       dataSource: ds.cloneWithRows(a),
-      data:this._genRows({})
+      data:this._genRows({}),
+
     }
   }
 
@@ -79,11 +81,7 @@ class Campaign extends Component {
 
     );
   }
-  _renderRows() {
-    return(
-        this._genRows().map((data) => this._renderRow(data))
-    );
-  }
+
   _renderRow(rowData, sectionID, rowID) {
     return (
       <View key={Math.random()} style={styles.test}>
@@ -99,7 +97,8 @@ class Campaign extends Component {
             <Text style={styles.time}>
               about {rowData.get('.time')} {rowData.get('timeUnit')} ago.
             </Text>
-            <TouchableOpacity onPress={() => this._like(rowID)}>
+            <TouchableOpacity onPress={() => this._like(rowID)} style={styles.likebox}>
+
               <Text style={styles.likes}>
                 {rowData.get('score')} respects!.
               </Text>
@@ -110,12 +109,16 @@ class Campaign extends Component {
       </View>
     );
   }
+
   _like(id) {
+    // alert(id == 0);
+    const list = this.state.data.update(id, (data) => data.updateIn(["score"],0,(score) => score+1));
+    // alert(list.toArray());
     this.setState(
         {
-          data: this.state.data.update(id, (likes) => likes++,1),
-
-  }
+          dataSource: ds.cloneWithRows(list.toArray()),
+          data: list,
+        }
     )
   }
   _renderFooter(){
@@ -124,7 +127,7 @@ class Campaign extends Component {
     );
   }
   _genRows() {
-     dataBlob = [
+    dataBlob = [
       {text: "comment 1",
         score: 350,
         name:"Daniel",
@@ -235,6 +238,9 @@ class Campaign extends Component {
 export default connect()(Campaign);
 
 const styles = StyleSheet.create({
+  likebox:{
+    flexDirection: 'column'
+  },
   metaRow:{
     flexDirection: 'row'
   },
