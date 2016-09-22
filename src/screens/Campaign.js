@@ -75,11 +75,15 @@ class Campaign extends Component {
   }
 
   _renderRow(rowData, sectionID, rowID) {
+    console.log('KAKI');
+
     return (
       <View>
 
 
-        <Image source={{uri:rowData.img}} style={styles.thumb}/>
+        <Image source={{uri:rowData.img}} style={styles.thumb}
+               resizeMode={Image.resizeMode.contain}
+        />
         <View>
           <Text style={styles.suggestions_name}>
             {rowData.name}

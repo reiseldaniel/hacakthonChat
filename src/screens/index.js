@@ -11,7 +11,7 @@ import ListScreen from './ListScreen';
 import SideMenu from './SideMenu';
 import BottomTabsSideMenu from './BottomTabsSideMenu';
 import TopTabsScreen from './TopTabsScreen';
-//import Campaign from './Campaign';
+import Campaign from './Campaign';
 
 // register all screens of the app (including internal ones)
 export function registerScreens(store, Provider) {
