@@ -12,6 +12,9 @@ import {
 import Immutable from 'immutable';
 import * as _ from 'lodash'
 import {connect} from 'react-redux';
+import CampaignComponent from '../components/CampaignComponent';
+import SuggestionComponent from '../components/SuggestionComponent';
+
 const {width,height} = Dimensions.get('window');
 const ds = new ListView.DataSource({
   rowHasChanged: (r1, r2) => !Immutable.is(r1, r2)
@@ -29,13 +32,14 @@ class Campaign extends Component {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this._renderRow = this._renderRow.bind(this);
-
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => !Immutable.is(r1, r2)
+    });
     const a = this._genRows({}).toArray();
-    this._like = this._like.bind(this);
+
     this.state = {
       dataSource: ds.cloneWithRows(a),
-      data:this._genRows({}),
-
+      data:this._genRows({})
     }
   }
 
@@ -70,15 +74,16 @@ class Campaign extends Component {
 
   render() {
     return (
-        <ScrollView>
-          <ListView scrollEnabled={true} style={styles.list}
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderRow}
-          />
-          {this._renderFooter()}
-        </ScrollView>
-
-
+        <View>
+          <CampaignComponent campaign={this.props.campaign}/>
+          <SuggestionComponent onSubmit={this.addSuggestion.bind(this)}/>
+            <ScrollView>
+              <ListView
+                  dataSource={this.state.dataSource}
+                  renderRow={this._renderRow}
+                  style={styles.list}/>
+            </ScrollView>
+      </View>
     );
   }
 
@@ -122,7 +127,7 @@ class Campaign extends Component {
     this.setState(
         {
           dataSource: ds.cloneWithRows(list.toArray()),
-          data: list,
+          data: list
         }
     )
   }
@@ -220,11 +225,35 @@ class Campaign extends Component {
       {text: "comment 5",
         score: 999,
         name:"Harel",
-        time:12,
+         time:12,
         timeUnit: "days",
         img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"}];
     const ordered = _.orderBy(dataBlob,['score'],['desc']);
     return Immutable.fromJS(ordered);
+  }
+
+
+  addSuggestion(suggestion){
+
+
+
+      let suggestionObj = {text: suggestion,
+          score: 0,
+          name:"Daniel",
+          time:0,
+          timeUnit: "seconds",
+          img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"}
+      const list = this.state.data.unshift(Immutable.Map(suggestionObj));
+
+      this.setState(
+          {
+              dataSource: ds.cloneWithRows(list.toArray()),
+              data: list
+          }
+      )
+
+
+    this.state.data.push(suggestion);
   }
 
   _renderSeparator(sectionID, rowID) {

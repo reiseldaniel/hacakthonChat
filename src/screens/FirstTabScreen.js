@@ -12,6 +12,7 @@ import {connect} from 'react-redux';
 import * as counterActions from '../reducers/counter/actions';
 import _ from 'lodash';
 
+
 let topBarVisible = true;
 
 // this is a traditional React component connected to the redux store
