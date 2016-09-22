@@ -98,9 +98,9 @@ class Campaign extends Component {
               about {rowData.get('.time')} {rowData.get('timeUnit')} ago.
             </Text>
             <TouchableOpacity onPress={() => this._like(rowID)} style={styles.likebox}>
-
+              {this._likeImage(rowData.get('hasLiked'))}
               <Text style={styles.likes}>
-                {rowData.get('score')} respects!.
+                {rowData.get('score')} respects!
               </Text>
             </TouchableOpacity>
           </View>
@@ -109,10 +109,15 @@ class Campaign extends Component {
       </View>
     );
   }
-
+  _likeImage(liked){
+    return liked? <Image source={require('../../images/likeOn.png')} style={styles.likeImage}/> :
+                  <Image source={require('../../images/likeOff.png')} style={styles.likeImage}/>
+  }
   _like(id) {
     // alert(id == 0);
-    const list = this.state.data.update(id, (data) => data.updateIn(["score"],0,(score) => score+1));
+    const list = this.state.data
+        .update(id, (data) => data.updateIn(["score"],0,(score) => this.state.data.get(id).get('hasLiked')? score-1 : score+1)
+        .updateIn(["hasLiked"],false,(hasLiked) => !hasLiked));
     // alert(list.toArray());
     this.setState(
         {
@@ -238,18 +243,24 @@ class Campaign extends Component {
 export default connect()(Campaign);
 
 const styles = StyleSheet.create({
+  likeImage:{
+    width:20,
+    height:20
+  },
   likebox:{
+    alignItems: 'center',
     flexDirection: 'column'
   },
   metaRow:{
     flexDirection: 'row'
   },
   time:{
+    fontSize: 10,
     flex: 0.7
   },
   likes:{
     color:'green',
-    flex:0.3
+    paddingRight: 5
   },
   test:{
     flexDirection: 'row'
@@ -271,7 +282,7 @@ const styles = StyleSheet.create({
 
   },
   text: {
-
+    color:'black'
   },
   suggestions_name: {
       fontSize: 12,
