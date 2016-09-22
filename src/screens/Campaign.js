@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   ListView,
+  Dimensions
 } from 'react-native';
-
+import Immutable from 'immutable';
 import * as _ from 'lodash'
 import {connect} from 'react-redux';
-
+const {width,height} = Dimensions.get('window');
 class Campaign extends Component {
 
   static navigatorStyle = {
@@ -24,12 +25,15 @@ class Campaign extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-    
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this._renderRow = this._renderRow.bind(this);
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => !Immutable.is(r1, r2)
+    });
+    const a = this._genRows({}).toArray();
+
     this.state = {
-      dataSource: ds.cloneWithRows(this._genRows({})),
-
-
+      dataSource: ds.cloneWithRows(a),
+      data:this._genRows({})
     }
   }
 
@@ -64,32 +68,63 @@ class Campaign extends Component {
 
   render() {
     return (
-        <ListView
-            dataSource={this.state.dataSource}
-            renderRow={this._renderRow}
-            style={styles.list}/>
+        <ScrollView>
+          <ListView scrollEnabled={true} style={styles.list}
+                    dataSource={this.state.dataSource}
+                    renderRow={this._renderRow}
+          />
+          {this._renderFooter()}
+        </ScrollView>
+
 
     );
   }
-
+  _renderRows() {
+    return(
+        this._genRows().map((data) => this._renderRow(data))
+    );
+  }
   _renderRow(rowData, sectionID, rowID) {
     return (
-      <View>
-        <Image source={{uri:rowData.img}} style={styles.thumb}/>
-        <View>
+      <View key={Math.random()} style={styles.test}>
+        <Image source={{uri:rowData.get('img')}} style={styles.thumb}/>
+        <View style={styles.listData}>
           <Text style={styles.suggestions_name}>
-            {rowData.name}
+            {rowData.get('name')}
           </Text>
           <Text style={styles.text}>
-            {rowData.text}
+            {rowData.get('text')}
           </Text>
+          <View style={styles.metaRow}>
+            <Text style={styles.time}>
+              about {rowData.get('.time')} {rowData.get('timeUnit')} ago.
+            </Text>
+            <TouchableOpacity onPress={() => this._like(rowID)}>
+              <Text style={styles.likes}>
+                {rowData.get('score')} respects!.
+              </Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
       </View>
     );
   }
+  _like(id) {
+    this.setState(
+        {
+          data: this.state.data.update(id, (likes) => likes++,1),
 
+  }
+    )
+  }
+  _renderFooter(){
+    return (
+      <Text>asd asdas dsa d</Text>
+    );
+  }
   _genRows() {
-    const dataBlob = [{text: "cooment 1", score: 300},
+     dataBlob = [
       {text: "comment 1",
         score: 350,
         name:"Daniel",
@@ -180,8 +215,8 @@ class Campaign extends Component {
         time:12,
         timeUnit: "days",
         img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"}];
-    return _.sortBy(dataBlob,'score');
-
+    const ordered = _.orderBy(dataBlob,['score'],['desc']);
+    return Immutable.fromJS(ordered);
   }
 
   _renderSeparator(sectionID, rowID) {
@@ -200,9 +235,25 @@ class Campaign extends Component {
 export default connect()(Campaign);
 
 const styles = StyleSheet.create({
+  metaRow:{
+    flexDirection: 'row'
+  },
+  time:{
+    flex: 0.7
+  },
+  likes:{
+    color:'green',
+    flex:0.3
+  },
+  test:{
+    flexDirection: 'row'
+  },
+  listData: {
+    flexDirection: 'column',
+    flex:1
+  },
   row: {
     flexDirection: 'row',
-    justifyContent: 'center',
     padding: 10,
     backgroundColor: '#F6F6F6'
   },
@@ -210,16 +261,18 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
+    margin: 10
 
   },
   text: {
-    flex: 1
+
   },
   suggestions_name: {
       fontSize: 12,
       fontWeight: 'bold',
   },
   list: {
+    height:height * 0.7,
     flexDirection: 'column',
     flex:1,
   }
