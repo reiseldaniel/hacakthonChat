@@ -64,12 +64,10 @@ class Campaign extends Component {
 
   render() {
     return (
-      <View style={styles.row}>
         <ListView
             dataSource={this.state.dataSource}
             renderRow={this._renderRow}
-        style={styles.list}/>
-      </View>
+            style={styles.list}/>
 
     );
   }
@@ -211,7 +209,8 @@ const styles = StyleSheet.create({
   thumb: {
     width: 40,
     height: 40,
-    borderRadius: 20
+    borderRadius: 20,
+
   },
   text: {
     flex: 1
