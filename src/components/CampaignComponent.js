@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {
   Text,
   Image,
-  View
+  View,
+    StyleSheet
 } from 'react-native';
 
 export default class CampaignComponent extends Component {
@@ -11,7 +12,7 @@ export default class CampaignComponent extends Component {
   }
   render() {
     return (
-    <View style={{height:150}}>
+    <View style={StyleSheet.navigationBar}>
         <Text>{this.props.campaign.text}</Text>
         <Image source={{uri:images.searchImage}}
     />
@@ -25,3 +26,13 @@ const images = {
   searchImage:"http://www.endlessicons.com/wp-content/uploads/2015/08/search-icon-2-614x460.png"
 
 }
+var navigationBarStyles = StyleSheet.create({
+    navigationBar: {
+        backgroundColor: '#FFFFFF',
+        height: 70,
+        position: 'absolute',
+        flexDirection: 'row',
+        bottom: 0,
+        justifyContent: 'space-between'
+    },
+});

@@ -21,7 +21,6 @@ export default class SuggestionComponent extends Component {
     }
     postSuggestion()
     {
-        alert(3)
         this.state.onSubmit(this.state.suggestion);
     }
     render() {

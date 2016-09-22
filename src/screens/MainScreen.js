@@ -25,8 +25,6 @@ export default class MainScreen extends Component{
     }
 
     moveToCampaign(campaign) {
-
-        debugger
         this.props.navigator.push({
             title: "Pushed from SideMenu",
             screen: "Campaign",

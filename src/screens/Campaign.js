@@ -122,7 +122,7 @@ class Campaign extends Component {
     this.setState(
         {
           dataSource: ds.cloneWithRows(list.toArray()),
-          data: list,
+          data: list
         }
     )
   }
@@ -220,7 +220,7 @@ class Campaign extends Component {
       {text: "comment 5",
         score: 999,
         name:"Harel",
-        time:12,
+         time:12,
         timeUnit: "days",
         img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"}];
     const ordered = _.orderBy(dataBlob,['score'],['desc']);
@@ -229,6 +229,25 @@ class Campaign extends Component {
 
 
   addSuggestion(suggestion){
+
+
+
+      let suggestionObj = {text: suggestion,
+          score: 0,
+          name:"Daniel",
+          time:0,
+          timeUnit: "seconds",
+          img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"}
+      const list = this.state.data.unshift(Immutable.Map(suggestionObj));
+
+      this.setState(
+          {
+              dataSource: ds.cloneWithRows(list.toArray()),
+              data: list
+          }
+      )
+
+
     this.state.data.push(suggestion);
   }
 
