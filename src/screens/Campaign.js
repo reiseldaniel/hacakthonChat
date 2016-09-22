@@ -77,6 +77,8 @@ class Campaign extends Component {
   _renderRow(rowData, sectionID, rowID) {
     return (
       <View>
+
+
         <Image source={{uri:rowData.img}} style={styles.thumb}/>
         <View>
           <Text style={styles.suggestions_name}>
