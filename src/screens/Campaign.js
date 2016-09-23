@@ -316,11 +316,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#F6F6F6'
   },
   thumb: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    margin: 10
-
+    width: 60,
+    height: 60
   },
   text: {
     color:'black'
@@ -330,7 +327,7 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
   },
   list: {
-    height:height-165,
+    height:height-175,
     flexDirection: 'column',
     flex:1,
   }

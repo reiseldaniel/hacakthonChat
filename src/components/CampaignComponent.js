@@ -28,16 +28,33 @@ export default class CampaignComponent extends Component {
   * */
   render() {
     return (
-    <View style={styles.container}>
-        <View style={styles.test}>
-            <Image source={{uri:this.state.campaign.image}} style={styles.thumb}/>
-            <View style={styles.listData}>
-                <Text style={styles.suggestions_name}>
-                    {this.state.campaign.title}
-                </Text>
-                <Text style={styles.text}>
-                    {this.state.campaign.description}
-                </Text>
+        <View>
+            <View style={styles.test}>
+                <Image source={{uri:this.state.campaign.image}} style={styles.thumb}/>
+                <View style={styles.listData}>
+                    <Text style={styles.suggestions_name}>
+                        {this.state.campaign.title}
+                    </Text>
+                    <Text style={styles.text}>
+                        {this.state.campaign.description}
+                    </Text>
+                </View>
+            </View>
+            <View>
+                <View style={styles.companyRow}>
+                    <Image style={styles.companyImage} source={{uri:this.state.campaign.companyImage}}/>
+                    <View style={styles.companyName}>
+                        <Text >
+                            by {this.state.campaign.companyName}
+                        </Text>
+
+                    </View>
+                    <TouchableOpacity onPress={() => {}} style={styles.reword}>
+                        <Text style={styles.likes}>
+                            {this.state.campaign.reword}$
+                        </Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.metaRow}>
                     <Text style={styles.time}>
                         {this.state.campaign.time} {this.state.campaign.timeUnit}{this.state.campaign.time > 1? 's':""} left!
@@ -48,10 +65,9 @@ export default class CampaignComponent extends Component {
                         </Text>
                     </TouchableOpacity>
                 </View>
-
             </View>
         </View>
-     </View>
+
     );
   }
 }
@@ -68,16 +84,23 @@ var styles = StyleSheet.create({
     likeImage:{
         width:20,
         height:20
+    },reword:{
+        alignItems:'flex-end'
     },
     likebox:{
         alignItems: 'center',
         flexDirection: 'column'
     },
+    companyRow:{
+        flexDirection: 'row',
+    },
     metaRow:{
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     time:{
-        fontSize: 10,
+        fontSize: 15,
+        marginLeft:5,
+        marginTop:3,
         flex: 0.7
     },
     likes:{
@@ -86,9 +109,11 @@ var styles = StyleSheet.create({
     },
     test:{
         flexDirection: 'row',
-        backgroundColor:'white'
+        backgroundColor:'white',
+        height:130
     },
     listData: {
+        marginLeft:10,
         flexDirection: 'column',
         flex:1
     },
@@ -100,19 +125,25 @@ var styles = StyleSheet.create({
     thumb: {
         width: 60,
         height: 60
-
-
     },
     text: {
-        color:'black'
+        color:'black',
+        flex:1
     },
     suggestions_name: {
         fontSize: 12,
         fontWeight: 'bold',
     },
-    list: {
-        height:height-165,
-        flexDirection: 'column',
-        flex:1,
+    companyImage:{
+        width:25,
+        height:25,
+        marginLeft:5,
+        borderRadius:13
+    },
+    companyName:{
+
+        marginLeft:5,
+        flex:0.7,
     }
+
 });
