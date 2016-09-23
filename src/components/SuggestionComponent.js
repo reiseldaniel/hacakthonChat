@@ -5,9 +5,10 @@ import {
     Image,
     View,
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    Dimensions
 } from 'react-native';
-
+const {width,height} = Dimensions.get('window');
 export default class SuggestionComponent extends Component {
     constructor(props) {
         super(props);
@@ -27,41 +28,46 @@ export default class SuggestionComponent extends Component {
 
         return (
 
-            <View style={{height:150}}>
-                <Text>Add Comment:</Text>
+            <View style={styles.container}>
                 <TextInput
                     style={styles.searchBar}
-                    placeholder="Search campaigns"
+                    placeholder="add suggestion"
                     onChange={this.onChange.bind(this)}
 
                 />
                 <TouchableOpacity onPress={() => this.postSuggestion()}>
-                   <Text>Post</Text>
+                   <Text style={styles.text}>Post</Text>
                 </TouchableOpacity>
             </View>
         );
     }
 }
 const styles = StyleSheet.create({
-    row: {
+    container: {
+        position:'absolute',
+        bottom:0,
+        left:0,
+        right:0,
+        flex:1,
         flexDirection: 'row',
-        justifyContent: 'center',
-        padding: 10,
-        backgroundColor: '#F6F6F6'
+        backgroundColor: '#F6F6F6',
+        height:40
     },
     thumb: {
         width: 64,
         height: 64
     },
     text: {
-        flex: 1
+        marginTop:15,
+        color: 'black',
+        marginLeft:10
     },
     searchBar: {
         paddingLeft: 30,
-        fontSize: 22,
-        height: 10,
-        flex: .1,
-        borderWidth: 9,
+        fontSize: 15,
+        height: 40,
+        width:width-50,
+        borderWidth: 2,
         borderColor: '#E4E4E4',
     }
 });

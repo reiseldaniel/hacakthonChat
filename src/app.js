@@ -36,7 +36,7 @@ export default class App {
   startApp(root) {
           Navigation.startSingleScreenApp({
             screen: {
-              screen: 'Campaign',
+              screen: 'Main',
               title: 'Main',
               navigatorStyle: {}
             },
