@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+ import dismissKeyboard from 'react-native-dismiss-keyboard';
+
 import {
     Text,
     TextInput,
@@ -23,6 +25,8 @@ export default class SuggestionComponent extends Component {
     postSuggestion()
     {
         this.state.onSubmit(this.state.suggestion);
+        this.state.suggestion  = '';
+        dismissKeyboard();
     }
     render() {
 
@@ -33,6 +37,7 @@ export default class SuggestionComponent extends Component {
                     style={styles.searchBar}
                     placeholder="add suggestion"
                     onChange={this.onChange.bind(this)}
+                    value={this.state.suggestion}
 
                 />
                 <TouchableOpacity onPress={() => this.postSuggestion()}>

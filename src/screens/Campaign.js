@@ -304,7 +304,8 @@ const styles = StyleSheet.create({
   },
   test:{
     flexDirection: 'row',
-    backgroundColor:'white'
+    backgroundColor:'white',
+    marginTop:20
   },
   listData: {
     flexDirection: 'column',
@@ -317,7 +318,9 @@ const styles = StyleSheet.create({
   },
   thumb: {
     width: 60,
-    height: 60
+    height: 60,
+    borderRadius:20,
+    marginRight:20
   },
   text: {
     color:'black'

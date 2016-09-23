@@ -26,7 +26,7 @@ export default class MainScreen extends Component{
 
     moveToCampaign(campaign) {
         this.props.navigator.push({
-            title: "Pushed from SideMenu",
+            title: "Campaign Page",
             screen: "Campaign",
             passProps:{campaign}
         });
@@ -212,7 +212,9 @@ const styles = StyleSheet.create({
     test:{
         flexDirection: 'row',
         backgroundColor:'white',
-        height:65
+        height:65,
+        marginTop:20
+
     },
     listData: {
         marginLeft:10,
@@ -226,7 +228,9 @@ const styles = StyleSheet.create({
     },
     thumb: {
         width: 60,
-        height: 60
+        height: 60,
+        borderRadius:20,
+        marginRight:20
     },
     text: {
         color:'black',

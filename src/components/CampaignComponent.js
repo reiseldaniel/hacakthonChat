@@ -123,8 +123,10 @@ var styles = StyleSheet.create({
         backgroundColor: '#F6F6F6'
     },
     thumb: {
-        width: 60,
-        height: 60
+        width: 100,
+        height: 100,
+        borderRadius:20
+
     },
     text: {
         color:'black',
