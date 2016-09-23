@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import {firebaseApp}   from './MainScreen';
 import {
   Image,
   Text,
@@ -16,6 +17,15 @@ import CampaignComponent from '../components/CampaignComponent';
 import SuggestionComponent from '../components/SuggestionComponent';
 import Dal from '../Dal/Dal'
 //import dal from "./index";
+
+config = {
+  apiKey: "AIzaSyANPj2A1GVk9qdN6T_JRsIDKBaIO54-CYA",
+  authDomain: "younameit-1c368.firebaseapp.com",
+  databaseURL: "https://younameit-1c368.firebaseio.com",
+  storageBucket: "younameit-1c368.appspot.com",
+  messagingSenderId: "359491308358"
+};
+
 
 
 const {width,height} = Dimensions.get('window');
@@ -40,10 +50,13 @@ class Campaign extends Component {
       rowHasChanged: (r1, r2) => !Immutable.is(r1, r2)
     });
     const a = Immutable.fromJS(props.campaign.comments);
-
+    this.db = firebaseApp.database().ref("/Campaings");
     this.state = {
       dataSource: ds.cloneWithRows(props.campaign.comments),
-      data:a
+      data:a,
+      campaign: props.campaign,
+      campaigns: props.campaigns,
+      campaignID:props.campaignId
     }
   }
 
@@ -139,111 +152,20 @@ class Campaign extends Component {
     const list = this.state.data
         .update(id, (data) => data.updateIn(["score"],0,(score) => this.state.data.get(id).get('hasLiked')? score-1 : score+1)
         .updateIn(["hasLiked"],false,(hasLiked) => !hasLiked));
-    // alert(list.toArray());
+    let campaigns = this.state.campaigns;
+    let camp = this.state.campaign;
+    camp.comments = list.map((data) => data.toMap());
+    campaigns[this.state.campaignID] = camp;
+    // this.db.set(campaigns);
     this.setState(
         {
+          campaigns:campaigns,
+          campaign: camp,
           dataSource: ds.cloneWithRows(list.toArray()),
           data: list
         }
     )
   }
-
-  // _genRows() {
-  //   dataBlob = [
-  //     {text: "comment 1",
-  //       score: 350,
-  //       name:"Daniel",
-  //       time:40,
-  //       timeUnit: "seconds",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 2",
-  //       score: 250,
-  //       name:"Moshe",
-  //       time:40,
-  //       timeUnit: "minutes",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 3",
-  //       score: 199,
-  //       name:"Dana",
-  //       time:1,
-  //       timeUnit: "minute",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 4",
-  //       score: 300,
-  //       name:"Moshe",
-  //       time:12,
-  //       timeUnit: "seconds",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 5",
-  //       score: 999,
-  //       name:"Harel",
-  //       time:12,
-  //       timeUnit: "days",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 1",
-  //       score: 350,
-  //       name:"Daniel",
-  //       time:40,
-  //       timeUnit: "seconds",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 2",
-  //       score: 250,
-  //       name:"Moshe",
-  //       time:40,
-  //       timeUnit: "minutes",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 3",
-  //       score: 199,
-  //       name:"Dana",
-  //       time:1,
-  //       timeUnit: "minute",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 4",
-  //       score: 300,
-  //       name:"Moshe",
-  //       time:12,
-  //       timeUnit: "seconds",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 5",
-  //       score: 999,
-  //       name:"Harel",
-  //       time:12,
-  //       timeUnit: "days",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 1",
-  //       score: 350,
-  //       name:"Daniel",
-  //       time:40,
-  //       timeUnit: "seconds",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 2",
-  //       score: 250,
-  //       name:"Moshe",
-  //       time:40,
-  //       timeUnit: "minutes",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 3",
-  //       score: 199,
-  //       name:"Dana",
-  //       time:1,
-  //       timeUnit: "minute",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 4",
-  //       score: 300,
-  //       name:"Moshe",
-  //       time:12,
-  //       timeUnit: "seconds",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-  //     {text: "comment 5",
-  //       score: 999,
-  //       name:"Harel",
-  //        time:12,
-  //       timeUnit: "days",
-  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"}];
-  //   const ordered = _.orderBy(dataBlob,['score'],['desc']);
-  //   return Immutable.fromJS(ordered);
-  // }
-
 
   addSuggestion(suggestion){
 
@@ -275,17 +197,6 @@ class Campaign extends Component {
     this.state.data.push(suggestion);
   }
 
-  _renderSeparator(sectionID, rowID) {
-    return (
-      <View
-        key={`${sectionID}-${rowID}`}
-        style={{
-          height: 1,
-          backgroundColor: rowID % 2 == 0 ? '#3B5998' : '#CCCCCC'
-        }}
-      />
-    );
-  }
 }
 
 export default connect()(Campaign);
