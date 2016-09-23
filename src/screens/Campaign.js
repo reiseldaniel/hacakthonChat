@@ -37,11 +37,11 @@ class Campaign extends Component {
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => !Immutable.is(r1, r2)
     });
-    const a = this._genRows({}).toArray();
+    const a = Immutable.fromJS(props.campaign.comments);
 
     this.state = {
-      dataSource: ds.cloneWithRows(a),
-      data:this._genRows({})
+      dataSource: ds.cloneWithRows(props.campaign.comments),
+      data:a
     }
   }
 
@@ -76,23 +76,35 @@ class Campaign extends Component {
 
   render() {
     return (
-        <View>
+        <View style={styles.container}>
           <CampaignComponent campaign={this.props.campaign}/>
-          <SuggestionComponent onSubmit={this.addSuggestion.bind(this)}/>
             <ScrollView>
               <ListView
                   dataSource={this.state.dataSource}
                   renderRow={this._renderRow}
                   style={styles.list}/>
             </ScrollView>
+          <SuggestionComponent onSubmit={this.addSuggestion.bind(this)}/>
       </View>
     );
   }
-
+  /*
+  * {
+   "text": "Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum.",
+   "score": 82,
+   "hasLiked": true,
+   "name": "Willie",
+   "image": "http://dummyimage.com/192x182.png/dddddd/000000",
+   "time": 94,
+   "timeUnit": "day"
+   }
+  * */
   _renderRow(rowData, sectionID, rowID) {
+     rowData = Immutable.fromJS(rowData);
     return (
-      <View key={Math.random()} style={styles.test}>
-        <Image source={{uri:rowData.get('img')}} style={styles.thumb}/>
+
+      <View style={styles.test}>
+        <Image source={{uri:rowData.get('image')}} style={styles.thumb}/>
         <View style={styles.listData}>
           <Text style={styles.suggestions_name}>
             {rowData.get('name')}
@@ -102,12 +114,12 @@ class Campaign extends Component {
           </Text>
           <View style={styles.metaRow}>
             <Text style={styles.time}>
-              about {rowData.get('.time')} {rowData.get('timeUnit')} ago.
+              about {rowData.get('.time')} {rowData.get('timeUnit')}{rowData.get('.time') > 1? "s":""} ago.
             </Text>
             <TouchableOpacity onPress={() => this._like(rowID)} style={styles.likebox}>
-
+              {this._likeImage(rowData.get('hasLiked'))}
               <Text style={styles.likes}>
-                {rowData.get('score')} respects!.
+                {rowData.get('score')} respects!
               </Text>
             </TouchableOpacity>
           </View>
@@ -116,10 +128,15 @@ class Campaign extends Component {
       </View>
     );
   }
-
+  _likeImage(liked){
+    return liked? <Image source={require('../../images/likeOn.png')} style={styles.likeImage}/> :
+                  <Image source={require('../../images/likeOff.png')} style={styles.likeImage}/>
+  }
   _like(id) {
     // alert(id == 0);
-    const list = this.state.data.update(id, (data) => data.updateIn(["score"],0,(score) => score+1));
+    const list = this.state.data
+        .update(id, (data) => data.updateIn(["score"],0,(score) => this.state.data.get(id).get('hasLiked')? score-1 : score+1)
+        .updateIn(["hasLiked"],false,(hasLiked) => !hasLiked));
     // alert(list.toArray());
     this.setState(
         {
@@ -128,11 +145,7 @@ class Campaign extends Component {
         }
     )
   }
-  _renderFooter(){
-    return (
-      <Text>asd asdas dsa d</Text>
-    );
-  }
+
   _genRows() {
     dataBlob = [
       {text: "comment 1",
@@ -244,16 +257,12 @@ class Campaign extends Component {
           img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"}
       const list = this.state.data.unshift(Immutable.Map(suggestionObj));
 
-
-
-
       this.setState(
           {
               dataSource: ds.cloneWithRows(list.toArray()),
               data: list
           }
-
-      )
+      );
 
 
     this.state.data.push(suggestion);
@@ -275,21 +284,31 @@ class Campaign extends Component {
 export default connect()(Campaign);
 
 const styles = StyleSheet.create({
+  container: {
+    flex:1
+  },
+  likeImage:{
+    width:20,
+    height:20
+  },
   likebox:{
+    alignItems: 'center',
     flexDirection: 'column'
   },
   metaRow:{
     flexDirection: 'row'
   },
   time:{
+    fontSize: 10,
     flex: 0.7
   },
   likes:{
     color:'green',
-    flex:0.3
+    paddingRight: 5
   },
   test:{
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor:'white'
   },
   listData: {
     flexDirection: 'column',
@@ -308,14 +327,14 @@ const styles = StyleSheet.create({
 
   },
   text: {
-
+    color:'black'
   },
   suggestions_name: {
       fontSize: 12,
       fontWeight: 'bold',
   },
   list: {
-    height:height * 0.7,
+    height:height-165,
     flexDirection: 'column',
     flex:1,
   }
