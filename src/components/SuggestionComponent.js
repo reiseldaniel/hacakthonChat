@@ -16,12 +16,15 @@ export default class SuggestionComponent extends Component {
         super(props);
         this.state = {
            suggestion:'',
+            campaign:this.props.campaign,
            onSubmit:this.props.onSubmit
         }
     }
     onChange(e) {
         this.setState({ suggestion: e.nativeEvent.text});
     }
+
+
     postSuggestion()
     {
         this.state.onSubmit(this.state.suggestion);

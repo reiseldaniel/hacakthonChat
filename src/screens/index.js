@@ -13,15 +13,11 @@ import BottomTabsSideMenu from './BottomTabsSideMenu';
 import TopTabsScreen from './TopTabsScreen';
 import Campaign from './Campaign';
 
+
 // register all screens of the app (including internal ones)
 export function registerScreens(store, Provider) {
   Navigation.registerComponent('Main', () => MainScreen, store, Provider);
   Navigation.registerComponent('Campaign', () => Campaign, store, Provider);
-
-
-
-
-
   Navigation.registerComponent('example.LoginScreen', () => LoginScreen, store, Provider);
   Navigation.registerComponent('example.FirstTabScreen', () => FirstTabScreen, store, Provider);
   Navigation.registerComponent('example.SecondTabScreen', () => SecondTabScreen, store, Provider);
@@ -31,3 +27,5 @@ export function registerScreens(store, Provider) {
   Navigation.registerComponent('example.BottomTabsSideMenu', () => BottomTabsSideMenu, store, Provider);
   Navigation.registerComponent('example.TopTabsScreen', () => TopTabsScreen);
 }
+
+

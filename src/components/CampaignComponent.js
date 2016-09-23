@@ -12,6 +12,13 @@ const {width,height} = Dimensions.get('window');
 export default class CampaignComponent extends Component {
   constructor(props) {
     super(props);
+      this.state = {
+
+          campaign:{}
+      };
+
+         this.state.campaign = this.props.campaign? this.state.campaign : this.state.campaign;
+
       this.state = {campaign:props.campaign}
   }
 
