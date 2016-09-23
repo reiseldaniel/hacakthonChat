@@ -14,13 +14,13 @@ export default class CampaignComponent extends Component {
           campaign:{}
       };
 
-         this.state.campaign = this.props.campaign? this.state.campaign : {text:""};
+         this.state.campaign = this.props.campaign? this.state.campaign : this.state.campaign;
 
   }
   render() {
     return (
     <View style={StyleSheet.navigationBar}>
-        <Text>{this.props.campaign.text}</Text>
+        <Text>{this.state.campaign.text}</Text>
         <Image source={{uri:images.searchImage}}
     />
      </View>
@@ -29,7 +29,6 @@ export default class CampaignComponent extends Component {
 }
 
 const images = {
-
   searchImage:"http://www.endlessicons.com/wp-content/uploads/2015/08/search-icon-2-614x460.png"
 
 }

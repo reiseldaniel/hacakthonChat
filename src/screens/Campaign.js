@@ -14,6 +14,8 @@ import * as _ from 'lodash'
 import {connect} from 'react-redux';
 import CampaignComponent from '../components/CampaignComponent';
 import SuggestionComponent from '../components/SuggestionComponent';
+import Dal from '../Dal/Dal'
+
 
 const {width,height} = Dimensions.get('window');
 const ds = new ListView.DataSource({
@@ -231,6 +233,8 @@ class Campaign extends Component {
   addSuggestion(suggestion){
 
 
+    Dal.addSuggestion(suggestion)
+
 
       let suggestionObj = {text: suggestion,
           score: 0,
@@ -240,11 +244,15 @@ class Campaign extends Component {
           img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"}
       const list = this.state.data.unshift(Immutable.Map(suggestionObj));
 
+
+
+
       this.setState(
           {
               dataSource: ds.cloneWithRows(list.toArray()),
               data: list
           }
+
       )
 
 

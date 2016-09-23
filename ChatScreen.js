@@ -23,6 +23,7 @@ export default class ChatScreen extends Component{
       message: ''
     }
     this.db = firebaseApp.database().ref('/channels/' + props.channel);
+
   }
 
   componentDidMount() {

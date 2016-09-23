@@ -12,16 +12,13 @@ import SideMenu from './SideMenu';
 import BottomTabsSideMenu from './BottomTabsSideMenu';
 import TopTabsScreen from './TopTabsScreen';
 import Campaign from './Campaign';
+import Dal from '../Dal/Dal'
 
 // register all screens of the app (including internal ones)
 export function registerScreens(store, Provider) {
   Navigation.registerComponent('Main', () => MainScreen, store, Provider);
   Navigation.registerComponent('Campaign', () => Campaign, store, Provider);
-
-
-
-
-
+  const dal = new Dal();
   Navigation.registerComponent('example.LoginScreen', () => LoginScreen, store, Provider);
   Navigation.registerComponent('example.FirstTabScreen', () => FirstTabScreen, store, Provider);
   Navigation.registerComponent('example.SecondTabScreen', () => SecondTabScreen, store, Provider);
