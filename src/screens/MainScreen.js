@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import {View, ListView, Text, TextInput,StyleSheet, TouchableOpacity} from 'react-native';
+import {View, ListView, Text, TextInput,StyleSheet, TouchableOpacity,Image,ScrollView} from 'react-native';
 import * as firebase from 'firebase';
 import _ from 'lodash';
 import Gallery from 'react-native-gallery';
@@ -36,15 +36,45 @@ export default class MainScreen extends Component{
     _renderRow(rowData, sectionID, rowID) {
 
         return (
-            <View style={styles.row} >
-                <TouchableOpacity onPress={() => this.moveToCampaign(rowData)}>
-                <Text style={styles.text} >
-                    {rowData.title}
-                </Text>
-                <Text style={styles.text}>
-                    comments: {rowData.comments.size}
-                </Text>
+            <View>
+
+            <TouchableOpacity onPress={() => this.moveToCampaign(rowData)}>
+
+                <View style={styles.test}>
+                    <Image source={{uri:rowData.image}} style={styles.thumb}/>
+                    <View style={styles.listData}>
+                        <Text style={styles.suggestions_name}>
+                            {rowData.title}
+                        </Text>
+                        <View>
+                            <View style={styles.metaRow}>
+                                <Text style={styles.time}>
+                                    {rowData.time} {rowData.timeUnit}{rowData.time > 1? 's':""} left!
+                                </Text>
+                                <TouchableOpacity onPress={() => {}} style={styles.likebox}>
+                                    <Text style={styles.likes}>
+                                        {rowData.comments.length} comments!
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.companyRow}>
+                    <Image style={styles.companyImage} source={{uri:rowData.companyImage}}/>
+                    <View style={styles.companyName}>
+                        <Text >
+                            by {rowData.companyName}
+                        </Text>
+
+                    </View>
+                    <TouchableOpacity onPress={() => {}} style={styles.reword}>
+                        <Text style={styles.likes}>
+                            {rowData.reword}$
+                        </Text>
                     </TouchableOpacity>
+                </View>
+            </TouchableOpacity>
             </View>
         );
     }
@@ -96,8 +126,9 @@ export default class MainScreen extends Component{
     filterNotes(searchText, notes) {
         let text = searchText.toLowerCase();
         return notes.filter((n) => {
-            let note = n.text.toLowerCase();
-            return note.search(text) !== -1;
+            let note = n.description.toLowerCase();
+            let note2 = n.title.toLowerCase();
+            return note.search(text) !== -1 || note2.search(text) !== -1;
         });
     }
 
@@ -107,71 +138,35 @@ export default class MainScreen extends Component{
 
 render() {
         return (
-            <View style={{flex: 1}}>
-
-
+            <ScrollView style={{flex: 1}}>
                 <View style={{height:50}}>
-                <TextInput
-                    style={styles.searchBar}
-                    value={this.state.searchText}
-                    onChange={this.setSearchText.bind(this)}
-                    placeholder="Search campaigns" />
-                 </View>
-                 {!this.state.searchText ?
-                     <View style={{height:150}}>
+                    <TextInput
+                        style={styles.searchBar}
+                        value={this.state.searchText}
+                        onChange={this.setSearchText.bind(this)}
+                        placeholder="Search campaigns" />
+                </View>
+                {!this.state.searchText ?
+                 <View style={{height:150}}>
                     <Gallery
                         style={{flex: 1, backgroundColor: 'black'}}
                         images={[
                             'http://p10.qhimg.com/t019e9cf51692f735be.jpg',
                             'http://ww2.sinaimg.cn/mw690/714a59a7tw1dxqkkg0cwlj.jpg',
-                            'http://www.bz55.com/uploads/allimg/150122/139-150122145421.jpg'
-                        ]}
-                    />
-                         </View>
-                    : null}
+                            'http://www.bz55.com/uploads/allimg/150122/139-150122145421.jpg']}/>
+                 </View>: null}
+
+                <ListView
+                    dataSource={this.state.campDataSource}
+                    renderRow={this._renderRow}/>
 
 
-
-                {/*<View id="categoryList"  style={{flexDirection: 'row' ,margin: 10}}>*/}
-                    {/*<ListView*/}
-                        {/*dataSource={this.state.catDataSource}*/}
-                        {/*renderRow={this._renderRow}/>*/}
-                {/*</View>*/}
-
-                <View id="campaignList" style={{flexDirection: 'row', margin: 10}}>
-                    <ListView
-                        dataSource={this.state.campDataSource}
-                        renderRow={this._renderRow}/>
-                </View>
-
-
-            </View>
+            </ScrollView>
         )
     }
-
-
-}
-
-const images = {
-
-    searchImage:"http://www.endlessicons.com/wp-content/uploads/2015/08/search-icon-2-614x460.png"
-
 }
 
 const styles = StyleSheet.create({
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        padding: 10,
-        backgroundColor: '#F6F6F6'
-    },
-    thumb: {
-        width: 64,
-        height: 64
-    },
-    text: {
-        flex: 1
-    },
     searchBar: {
         paddingLeft: 30,
         fontSize: 22,
@@ -179,5 +174,78 @@ const styles = StyleSheet.create({
         flex: .1,
         borderWidth: 9,
         borderColor: '#E4E4E4',
-        }
+        },
+    container:{
+        height: 75,flex:1
+
+    },
+    image:{
+        width: 60,
+        height:60
+    },
+    likeImage:{
+        width:20,
+        height:20
+    },reword:{
+        alignItems:'flex-end'
+    },
+    likebox:{
+        alignItems: 'center',
+        flexDirection: 'column'
+    },
+    companyRow:{
+        flexDirection: 'row',
+    },
+    metaRow:{
+        flexDirection: 'row',
+    },
+    time:{
+        fontSize: 15,
+        marginLeft:5,
+        marginTop:3,
+        flex: 0.7
+    },
+    likes:{
+        color:'green',
+        paddingRight: 5
+    },
+    test:{
+        flexDirection: 'row',
+        backgroundColor:'white',
+        height:65
+    },
+    listData: {
+        marginLeft:10,
+        flexDirection: 'column',
+        flex:1
+    },
+    row: {
+        flexDirection: 'row',
+        padding: 10,
+        backgroundColor: '#F6F6F6'
+    },
+    thumb: {
+        width: 60,
+        height: 60
+    },
+    text: {
+        color:'black',
+        flex:1
+    },
+    suggestions_name: {
+        fontSize: 12,
+        fontWeight: 'bold',
+    },
+    companyImage:{
+        width:25,
+        height:25,
+        marginLeft:5,
+        borderRadius:13
+    },
+    companyName:{
+
+        marginLeft:5,
+        flex:0.7,
+    }
+
 });
