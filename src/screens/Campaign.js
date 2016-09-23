@@ -15,12 +15,14 @@ import {connect} from 'react-redux';
 import CampaignComponent from '../components/CampaignComponent';
 import SuggestionComponent from '../components/SuggestionComponent';
 import Dal from '../Dal/Dal'
+//import dal from "./index";
 
 
 const {width,height} = Dimensions.get('window');
 const ds = new ListView.DataSource({
   rowHasChanged: (r1, r2) => !Immutable.is(r1, r2)
 });
+
 class Campaign extends Component {
 
   static navigatorStyle = {
@@ -84,7 +86,7 @@ class Campaign extends Component {
                   renderRow={this._renderRow}
                   style={styles.list}/>
             </ScrollView>
-          <SuggestionComponent onSubmit={this.addSuggestion.bind(this)}/>
+          <SuggestionComponent onSubmit={this.addSuggestion.bind(this)} campaign={this.props.campaign} />
       </View>
     );
   }
@@ -146,115 +148,120 @@ class Campaign extends Component {
     )
   }
 
-  _genRows() {
-    dataBlob = [
-      {text: "comment 1",
-        score: 350,
-        name:"Daniel",
-        time:40,
-        timeUnit: "seconds",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 2",
-        score: 250,
-        name:"Moshe",
-        time:40,
-        timeUnit: "minutes",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 3",
-        score: 199,
-        name:"Dana",
-        time:1,
-        timeUnit: "minute",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 4",
-        score: 300,
-        name:"Moshe",
-        time:12,
-        timeUnit: "seconds",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 5",
-        score: 999,
-        name:"Harel",
-        time:12,
-        timeUnit: "days",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 1",
-        score: 350,
-        name:"Daniel",
-        time:40,
-        timeUnit: "seconds",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 2",
-        score: 250,
-        name:"Moshe",
-        time:40,
-        timeUnit: "minutes",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 3",
-        score: 199,
-        name:"Dana",
-        time:1,
-        timeUnit: "minute",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 4",
-        score: 300,
-        name:"Moshe",
-        time:12,
-        timeUnit: "seconds",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 5",
-        score: 999,
-        name:"Harel",
-        time:12,
-        timeUnit: "days",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 1",
-        score: 350,
-        name:"Daniel",
-        time:40,
-        timeUnit: "seconds",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 2",
-        score: 250,
-        name:"Moshe",
-        time:40,
-        timeUnit: "minutes",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 3",
-        score: 199,
-        name:"Dana",
-        time:1,
-        timeUnit: "minute",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 4",
-        score: 300,
-        name:"Moshe",
-        time:12,
-        timeUnit: "seconds",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
-      {text: "comment 5",
-        score: 999,
-        name:"Harel",
-         time:12,
-        timeUnit: "days",
-        img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"}];
-    const ordered = _.orderBy(dataBlob,['score'],['desc']);
-    return Immutable.fromJS(ordered);
-  }
+  // _genRows() {
+  //   dataBlob = [
+  //     {text: "comment 1",
+  //       score: 350,
+  //       name:"Daniel",
+  //       time:40,
+  //       timeUnit: "seconds",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 2",
+  //       score: 250,
+  //       name:"Moshe",
+  //       time:40,
+  //       timeUnit: "minutes",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 3",
+  //       score: 199,
+  //       name:"Dana",
+  //       time:1,
+  //       timeUnit: "minute",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 4",
+  //       score: 300,
+  //       name:"Moshe",
+  //       time:12,
+  //       timeUnit: "seconds",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 5",
+  //       score: 999,
+  //       name:"Harel",
+  //       time:12,
+  //       timeUnit: "days",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 1",
+  //       score: 350,
+  //       name:"Daniel",
+  //       time:40,
+  //       timeUnit: "seconds",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 2",
+  //       score: 250,
+  //       name:"Moshe",
+  //       time:40,
+  //       timeUnit: "minutes",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 3",
+  //       score: 199,
+  //       name:"Dana",
+  //       time:1,
+  //       timeUnit: "minute",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 4",
+  //       score: 300,
+  //       name:"Moshe",
+  //       time:12,
+  //       timeUnit: "seconds",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 5",
+  //       score: 999,
+  //       name:"Harel",
+  //       time:12,
+  //       timeUnit: "days",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 1",
+  //       score: 350,
+  //       name:"Daniel",
+  //       time:40,
+  //       timeUnit: "seconds",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 2",
+  //       score: 250,
+  //       name:"Moshe",
+  //       time:40,
+  //       timeUnit: "minutes",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 3",
+  //       score: 199,
+  //       name:"Dana",
+  //       time:1,
+  //       timeUnit: "minute",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 4",
+  //       score: 300,
+  //       name:"Moshe",
+  //       time:12,
+  //       timeUnit: "seconds",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"},
+  //     {text: "comment 5",
+  //       score: 999,
+  //       name:"Harel",
+  //        time:12,
+  //       timeUnit: "days",
+  //       img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"}];
+  //   const ordered = _.orderBy(dataBlob,['score'],['desc']);
+  //   return Immutable.fromJS(ordered);
+  // }
 
 
   addSuggestion(suggestion){
 
 
-    Dal.addSuggestion(suggestion)
 
 
-      let suggestionObj = {text: suggestion,
-          score: 0,
-          name:"Daniel",
-          time:0,
-          timeUnit: "seconds",
-          img:"http://classroomclipart.com/images/gallery/Clipart/Faces/TN_asian_girl_face.jpg"}
+      let user = Dal.currentUser();
+      let suggestionObj = {
+          id: 333,
+          created: Date.now(),
+          campaignID: this.props.campaign,
+          userid: user.id,
+          text: suggestion,
+          userImage: user.img,
+          userName: user.name
+      }
+
+      Dal.addSuggestion(suggestionObj)
       const list = this.state.data.unshift(Immutable.Map(suggestionObj));
 
       this.setState(
