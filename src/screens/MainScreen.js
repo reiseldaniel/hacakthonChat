@@ -14,13 +14,21 @@ export default class MainScreen extends Component{
     constructor(props) {
         super(props);
         this._renderRow = this._renderRow.bind(this);
-        alert(dataStore.test);
+
         this.state = {
             campaigns:dataStore.campaigns,
             campDataSource: ds.cloneWithRows(dataStore.campaigns),
             searchText: ''
 
         };
+    }
+    componentWillReact() {
+        if(this.state.campaigns){
+            alert(this.state.campaigns.length);
+            this.setState ({
+                campDataSource: ds.cloneWithRows(this.state.campaigns.slice()),
+            });
+        }
     }
     componentDidMount() {
 
@@ -139,6 +147,8 @@ export default class MainScreen extends Component{
 
 
 render() {
+            const campDataSource = ds.cloneWithRows(dataStore.campaigns.slice());
+
         return (
             <ScrollView style={{flex: 1}}>
                 <Text>{dataStore.campaigns.length}</Text>
@@ -160,7 +170,7 @@ render() {
                  </View>: null}
 
                 <ListView
-                    dataSource={this.state.campDataSource}
+                    dataSource={campDataSource}
                     renderRow={this._renderRow}/>
 
 
