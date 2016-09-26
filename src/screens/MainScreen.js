@@ -1,56 +1,29 @@
 
 import React, { Component } from 'react';
 import {View, ListView, Text, TextInput,StyleSheet, TouchableOpacity,Image,ScrollView} from 'react-native';
-import * as firebase from 'firebase';
-import _ from 'lodash';
 import Gallery from 'react-native-gallery';
-// import Dal from '../Dal/Dal'
-
-
-
-config = {
-    apiKey: "AIzaSyANPj2A1GVk9qdN6T_JRsIDKBaIO54-CYA",
-    authDomain: "younameit-1c368.firebaseapp.com",
-    databaseURL: "https://younameit-1c368.firebaseio.com",
-    storageBucket: "younameit-1c368.appspot.com",
-    messagingSenderId: "359491308358"
-};
-export const firebaseApp = firebase.initializeApp(config);
+import { observer } from 'mobx-react/native';
+import dataStore from '../stores/dataStore';
 
 
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+@observer
 export default class MainScreen extends Component{
-
-    config = {
-        apiKey: "AIzaSyANPj2A1GVk9qdN6T_JRsIDKBaIO54-CYA",
-        authDomain: "younameit-1c368.firebaseapp.com/Campaings",
-        databaseURL: "https://younameit-1c368.firebaseio.com",
-        storageBucket: "younameit-1c368.appspot.com",
-        messagingSenderId: "359491308358"
-    };
 
     constructor(props) {
         super(props);
-        this._renderRow = this._renderRow.bind(this)
-
+        this._renderRow = this._renderRow.bind(this);
+        alert(dataStore.test);
         this.state = {
-            campaigns:[],
-            campDataSource: ds.cloneWithRows(this._genCampRows()),
+            campaigns:dataStore.campaigns,
+            campDataSource: ds.cloneWithRows(dataStore.campaigns),
             searchText: ''
 
         };
-        this.db = firebaseApp.database().ref("/Campaings");
     }
     componentDidMount() {
-        this.db.on('value', (snap) => {
-            const campaigns = [];
-            snap.forEach((item) => {
-                campaigns.push(item.val());
-            });
-            this.setState({campaigns:campaigns,
-                campDataSource: ds.cloneWithRows(campaigns)});
-        })
+
     }
     moveToCampaign(campaign,campaignID) {
         this.props.navigator.push({
@@ -141,11 +114,11 @@ export default class MainScreen extends Component{
         }
     setSearchText(event){
 
-        let searchText = event.nativeEvent.text;
+        const searchText = event.nativeEvent.text;
         this.setState({searchText});
-        let campaigns =  this.state.campaigns;
+        const campaigns =  this.state.campaigns;
 
-        let filteredData = this.filterNotes(searchText, campaigns);
+        let filteredData = this.filterNotes(searchText, this.state.campaigns);
         this.setState({
             campDataSource: ds.cloneWithRows(filteredData)
 
@@ -168,6 +141,7 @@ export default class MainScreen extends Component{
 render() {
         return (
             <ScrollView style={{flex: 1}}>
+                <Text>{dataStore.campaigns.length}</Text>
                 <View style={{height:50}}>
                     <TextInput
                         style={styles.searchBar}
