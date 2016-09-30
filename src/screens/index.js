@@ -15,17 +15,10 @@ import Campaign from './Campaign';
 
 
 // register all screens of the app (including internal ones)
-export function registerScreens(store, Provider) {
-  Navigation.registerComponent('Main', () => MainScreen, store, Provider);
-  Navigation.registerComponent('Campaign', () => Campaign, store, Provider);
-  Navigation.registerComponent('example.LoginScreen', () => LoginScreen, store, Provider);
-  Navigation.registerComponent('example.FirstTabScreen', () => FirstTabScreen, store, Provider);
-  Navigation.registerComponent('example.SecondTabScreen', () => SecondTabScreen, store, Provider);
-  Navigation.registerComponent('example.PushedScreen', () => PushedScreen, store, Provider);
-  Navigation.registerComponent('example.ListScreen', () => ListScreen, store, Provider);
-  Navigation.registerComponent('example.SideMenu', () => SideMenu, store, Provider);
-  Navigation.registerComponent('example.BottomTabsSideMenu', () => BottomTabsSideMenu, store, Provider);
-  Navigation.registerComponent('example.TopTabsScreen', () => TopTabsScreen);
+export function registerScreens() {
+  Navigation.registerComponent('Main', () => MainScreen);
+  Navigation.registerComponent('Campaign', () => Campaign);
+  Navigation.registerComponent('Login', () => LoginScreen);
 }
 
 

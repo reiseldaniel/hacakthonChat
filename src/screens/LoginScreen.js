@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import { observer } from 'mobx-react/native';
 import {
   Text,
   View,
@@ -6,25 +7,19 @@ import {
   TouchableOpacity,
   StyleSheet
 } from 'react-native';
-import {connect} from 'react-redux';
-import * as counterActions from '../reducers/counter/actions';
-import * as appActions from '../reducers/app/actions';
-
+import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
+import RootStore from '../stores/rootStore'
 // this is a traditional React component connected to the redux store
+@observer
 class LoginScreen extends Component {
 
-  static propTypes = {
-    str: PropTypes.string.isRequired,
-    obj: PropTypes.object.isRequired,
-    num: PropTypes.number.isRequired
-  };
+
 
   constructor(props) {
     super(props);
   }
 
   componentWillUnmount() {
-    console.log('Component-Lifecycle', 'componentWillUnmount', 'LoginScreen');
   }
 
   render() {
@@ -32,7 +27,7 @@ class LoginScreen extends Component {
       <View style={{flex: 1, padding: 20}}>
 
         <Text style={styles.text}>
-          <Text style={{fontWeight: '500'}}>Counter: </Text> {this.props.counter.count}
+          <Text style={{fontWeight: '500'}}>Counter: </Text>
         </Text>
 
         <TouchableOpacity onPress={ this.onIncrementPress.bind(this) }>
@@ -46,52 +41,35 @@ class LoginScreen extends Component {
         <TouchableOpacity onPress={ this.onShowModalPress.bind(this) }>
           <Text style={styles.button}>Show another login as modal</Text>
         </TouchableOpacity>
+        <FBLogin
+            buttonView={<FBLoginView />}
+            ref={(fbLogin) => { this.fbLogin = fbLogin }}
+            loginBehavior={FBLoginManager.LoginBehaviors.Native}
+            permissions={["email","user_friends"]}
+            onLogin={RootStore.login()}
+            onLoginFound={function(e){console.log(e)}}
+            onLoginNotFound={function(e){console.log(e)}}
+            onLogout={function(e){console.log(e)}}
+            onCancel={function(e){console.log(e)}}
+            onPermissionsMissing={function(e){console.log(e)}}
+        />
 
-        <Text style={{fontWeight: '500'}}>Function prop: {this.props.fn ? this.props.fn() : ''}</Text>
-        <Text style={{fontWeight: '500'}}>String prop: {this.props.str}</Text>
-        <Text style={{fontWeight: '500'}}>Number prop: {this.props.num}</Text>
-        <Text style={{fontWeight: '500'}}>Object prop: {this.props.obj.str}</Text>
-        <Text style={{fontWeight: '500'}}>Array prop: {this.props.obj.arr[0].str}</Text>
-        <Text style={{fontWeight: '500'}}>Array of arrays prop: {JSON.stringify(this.props.obj.arr2)}</Text>
+
+
 
       </View>
     );
   }
 
   onIncrementPress() {
-    this.props.dispatch(counterActions.increment());
+
   }
 
   onLoginPress() {
-    this.props.dispatch(appActions.login());
+    RootStore.login();
   }
 
   onShowModalPress() {
-    this.props.navigator.showModal({
-      screen: 'example.LoginScreen',
-      title: 'Login',
-      passProps: {
-        str: 'This is a prop passed in \'startSingleScreenApp()\'!',
-        obj: {
-          str: 'This is a prop passed in an object!',
-          arr: [
-            {
-              str: 'This is a prop in an object in an array in an object!'
-            }
-          ],
-          arr2: [
-            [
-              'array of strings',
-              'with two strings'
-            ],
-            [
-              1, 2, 3
-            ]
-          ]
-        },
-        num: 1234
-      }
-    });
   }
 }
 
@@ -111,11 +89,4 @@ const styles = StyleSheet.create({
   }
 });
 
-// which props do we want to inject, given the global state?
-function mapStateToProps(state) {
-  return {
-    counter: state.counter
-  };
-}
-
-export default connect(mapStateToProps)(LoginScreen);
+export default LoginScreen;

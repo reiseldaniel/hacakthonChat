@@ -147,7 +147,7 @@ export default class MainScreen extends Component{
 
 
 render() {
-            const campDataSource = ds.cloneWithRows(dataStore.campaigns.slice());
+        const campDataSource = ds.cloneWithRows(dataStore.campaigns.slice());
 
         return (
             <ScrollView style={{flex: 1}}>

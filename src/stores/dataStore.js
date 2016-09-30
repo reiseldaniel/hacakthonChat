@@ -1,7 +1,6 @@
 /**
  * Created by daniel on 9/25/16.
  */
-import {ListView} from 'react-native';
 import { observable,computed } from 'mobx';
 import * as firebase from 'firebase';
 config = {
@@ -12,15 +11,12 @@ config = {
     messagingSenderId: "359491308358"
 };
 
-const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 class DataStore {
     @observable campaigns = [];
     @observable likes = [];
     @observable suggestions = [];
     @observable test = false;
-    @computed get ds() {
-        return ds.cloneWithRows(this.campaigns)
-    }
+
     constructor(){
 
         this.firebaseApp = firebase.initializeApp(config);

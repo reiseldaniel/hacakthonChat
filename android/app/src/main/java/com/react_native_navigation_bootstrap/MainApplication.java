@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactPackage;
 import com.reactnativenavigation.NavigationApplication;
-
+import com.magus.fblogin.FacebookLoginPackage;
 import java.util.List;
 
 public class MainApplication extends NavigationApplication {
@@ -17,6 +17,7 @@ public class MainApplication extends NavigationApplication {
   @NonNull
   @Override
   public List<ReactPackage> createAdditionalReactPackages() {
+    new FacebookLoginPackage()
     // Add the packages you require here.
     // No need to add RnnPackage and MainReactPackage
     return null;

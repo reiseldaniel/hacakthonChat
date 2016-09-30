@@ -39,7 +39,7 @@ class Campaign extends Component {
     statusBarColor: '#7CB342',
     toolBarColor: '#8BC34A',
     navigationBarColor: '#8BC34A',
-    drawUnderNavBar: true
+    drawUnderNavBar: false
   };
 
   constructor(props) {
