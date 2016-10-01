@@ -39,3 +39,6 @@ export default class FBLoginView extends Component {
         )
     }
 }
+/**
+ * Created by daniel on 10/1/16.
+ */

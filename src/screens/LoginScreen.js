@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   StyleSheet
 } from 'react-native';
-import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 import RootStore from '../stores/rootStore';
-import FBLoginView from '../components/FBloginView';
+import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
+import FBLoginView from '../components/FbloginView'
 
 @observer
 class LoginScreen extends Component {
@@ -18,6 +18,7 @@ class LoginScreen extends Component {
 
   constructor(props) {
     super(props);
+      this.state = {per:"assa"};
   }
 
   componentWillUnmount() {
@@ -28,11 +29,11 @@ class LoginScreen extends Component {
       <View style={{flex: 1, padding: 20}}>
 
         <Text style={styles.text}>
-          <Text style={{fontWeight: '500'}}>Counter: </Text>
+          {this.state.per}
         </Text>
 
         <TouchableOpacity onPress={ this.onIncrementPress.bind(this) }>
-          <Text style={styles.button}>Increment Counter</Text>
+          <Text style={styles.button}>Increment Counter {this.state.per} ! </Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={ this.onLoginPress.bind(this) }>
@@ -47,12 +48,12 @@ class LoginScreen extends Component {
               ref={(fbLogin) => { this.fbLogin = fbLogin }}
               loginBehavior={FBLoginManager.LoginBehaviors.Native}
               permissions={["email","user_friends"]}
-              onLogin={function(e){console.log(e)}}
-              onLoginFound={function(e){console.log(e)}}
-              onLoginNotFound={function(e){console.log(e)}}
-              onLogout={function(e){console.log(e)}}
-              onCancel={function(e){console.log(e)}}
-              onPermissionsMissing={function(e){console.log(e)}}
+              onLogin={function(e){alert(e)}}
+              onLoginFound={function(e){alert(e)}}
+              onLoginNotFound={function(e){alert(e)}}
+              onLogout={function(e){alert(e)}}
+              onCancel={function(e){alert(e)}}
+              onPermissionsMissing={function(e){alert(e)}}
           />
 
 
@@ -70,6 +71,7 @@ class LoginScreen extends Component {
   }
 
   onShowModalPress() {
+
   }
 }
 
