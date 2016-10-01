@@ -8,8 +8,9 @@ import {
   StyleSheet
 } from 'react-native';
 import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
-import RootStore from '../stores/rootStore'
-// this is a traditional React component connected to the redux store
+import RootStore from '../stores/rootStore';
+import FBLoginView from '../components/FBloginView';
+
 @observer
 class LoginScreen extends Component {
 
@@ -41,19 +42,18 @@ class LoginScreen extends Component {
         <TouchableOpacity onPress={ this.onShowModalPress.bind(this) }>
           <Text style={styles.button}>Show another login as modal</Text>
         </TouchableOpacity>
-        <FBLogin
-            buttonView={<FBLoginView />}
-            ref={(fbLogin) => { this.fbLogin = fbLogin }}
-            loginBehavior={FBLoginManager.LoginBehaviors.Native}
-            permissions={["email","user_friends"]}
-            onLogin={RootStore.login()}
-            onLoginFound={function(e){console.log(e)}}
-            onLoginNotFound={function(e){console.log(e)}}
-            onLogout={function(e){console.log(e)}}
-            onCancel={function(e){console.log(e)}}
-            onPermissionsMissing={function(e){console.log(e)}}
-        />
-
+          <FBLogin
+              buttonView={<FBLoginView />}
+              ref={(fbLogin) => { this.fbLogin = fbLogin }}
+              loginBehavior={FBLoginManager.LoginBehaviors.Native}
+              permissions={["email","user_friends"]}
+              onLogin={function(e){console.log(e)}}
+              onLoginFound={function(e){console.log(e)}}
+              onLoginNotFound={function(e){console.log(e)}}
+              onLogout={function(e){console.log(e)}}
+              onCancel={function(e){console.log(e)}}
+              onPermissionsMissing={function(e){console.log(e)}}
+          />
 
 
 

@@ -1,7 +1,4 @@
 <resources>
     <string name="app_name">react_native_navigation_bootstrap</string>
-</resources>
-<resources>
-<string name="app_name">youNameIt</string>
-<string name="fb_app_id">595143937338519</string>
+    <string name="fb_app_id">595143937338519</string>
 </resources>

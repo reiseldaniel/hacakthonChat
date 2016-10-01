@@ -17,7 +17,8 @@ public class MainApplication extends NavigationApplication {
   @NonNull
   @Override
   public List<ReactPackage> createAdditionalReactPackages() {
-    new FacebookLoginPackage()
+//      new MainReactPackage();
+      new FacebookLoginPackage();
     // Add the packages you require here.
     // No need to add RnnPackage and MainReactPackage
     return null;
