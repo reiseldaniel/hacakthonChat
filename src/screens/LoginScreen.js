@@ -48,12 +48,12 @@ class LoginScreen extends Component {
               ref={(fbLogin) => { this.fbLogin = fbLogin }}
               loginBehavior={FBLoginManager.LoginBehaviors.Native}
               permissions={["email","user_friends"]}
-              onLogin={function(e){alert(e)}}
-              onLoginFound={function(e){alert(e)}}
-              onLoginNotFound={function(e){alert(e)}}
-              onLogout={function(e){alert(e)}}
-              onCancel={function(e){alert(e)}}
-              onPermissionsMissing={function(e){alert(e)}}
+              onLogin={function(e){alert(JSON.stringify(e))}}
+              onLoginFound={function(e){alert(JSON.stringify(e))}}
+              onLoginNotFound={function(e){alert(JSON.stringify(e))}}
+              onLogout={function(e){alert(JSON.stringify(e))}}
+              onCancel={function(e){alert(JSON.stringify(e))}}
+              onPermissionsMissing={function(e){alert(JSON.stringify(e))}}
           />
 
 
